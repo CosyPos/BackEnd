@@ -37,7 +37,7 @@ class DishController extends Controller
      */
     public function show(Dish $dish)
     {
-        //
+        return $dish;
     }
 
     /**
@@ -45,7 +45,14 @@ class DishController extends Controller
      */
     public function update(Request $request, Dish $dish)
     {
-        //
+        $fields = $request->validate([
+            'dish_name' => "required|max:255",
+            'price' => "required"
+        ]);
+
+        $dish->update($fields);
+
+        return $dish;
     }
 
     /**
@@ -53,6 +60,8 @@ class DishController extends Controller
      */
     public function destroy(Dish $dish)
     {
-        //
+        $dish->delete();
+
+        return ['message' => "the post was deleted"];
     }
 }
