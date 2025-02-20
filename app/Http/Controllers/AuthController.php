@@ -6,15 +6,12 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function register(){
-        return "register";
-    }
 
-    public function login(){
+    public function login(Request $request){
         return "login";
     }
 
-    public function logout(){
+    public function logout(Request $request){
         return "logout";
     }
 }
