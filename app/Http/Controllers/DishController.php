@@ -1,9 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Http\Requests\StoreDishRequest;
-use App\Http\Requests\UpdateDishRequest;
 use App\Models\Dish;
 use Illuminate\Http\Request;
 
