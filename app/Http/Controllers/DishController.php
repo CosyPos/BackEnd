@@ -21,12 +21,13 @@ class DishController extends Controller
     {
         $fields = $request->validate([
             'dish_name' => 'required|max:255',
-            'price' => 'required'
+            'price' => 'required|integer',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
         $dish = Dish::create($fields);
 
-        return $dish;
+        return response()->json($dish->load('category'), 201);
     }
 
     /**
@@ -34,7 +35,7 @@ class DishController extends Controller
      */
     public function show(Dish $dish)
     {
-        return $dish;
+        return response()->json($dish->load('category'), 200);
     }
 
     /**
@@ -43,13 +44,14 @@ class DishController extends Controller
     public function update(Request $request, Dish $dish)
     {
         $fields = $request->validate([
-            'dish_name' => "required|max:255",
-            'price' => "required"
+            'dish_name' => "sometimes|,max:255",
+            'price' => "sometimes",
+            'category_id' => 'sometimes|exists:categories,id'
         ]);
 
         $dish->update($fields);
 
-        return $dish;
+        return response()->json($dish->load('category'), 200);
     }
 
     /**
@@ -59,6 +61,6 @@ class DishController extends Controller
     {
         $dish->delete();
 
-        return ['message' => "the post was deleted"];
+        return response()->json(null, 204);
     }
 }
