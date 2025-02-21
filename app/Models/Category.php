@@ -14,4 +14,8 @@ class Category extends Model
         'cat_name',
         'description'
     ];
+
+    public function dishes(){
+        return $this->hasMany(Dish::class);
+    }
 }
