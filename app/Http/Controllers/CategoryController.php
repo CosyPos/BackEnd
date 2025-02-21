@@ -23,8 +23,13 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        $category = Category::create($request->validated());
-        return new CategoryResource($category);
+        try{
+            $category = Category::create($request->validated());
+            return new CategoryResource($category);
+        } catch (\Exception $e){
+            return response()->json(['error' => 'Failed to save inventory' . $e->getMessage()], 500);
+        }
+
     }
 
     /**

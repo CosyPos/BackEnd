@@ -23,7 +23,7 @@ class StoreinventoryRequest extends FormRequest
     {
         return [
             'quantity' => 'required|integer|min:0|max:50',
-            'availability' => 'required|max:30',
+            'availability' => 'required|string|max:30|in:In Stock,Out of Stock',
             'dish_id' => 'required|integer|exists:dishes,id'
         ];
     }
@@ -32,7 +32,8 @@ class StoreinventoryRequest extends FormRequest
     {
         return [
             'dish_id.exists' => "This dish does not exist!",
-            'quantity.max' => "Quantity is limited to 50 pcs only"
+            'quantity.max' => "Quantity is limited to 50 pcs only",
+            'availability.in' => "Availability should be 'In Stock' and 'Out of Stock' only!"
         ];
     }
 }

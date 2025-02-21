@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateinventoryRequest;
 use App\Http\Resources\InventoryResource;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class InventoryController extends Controller
 {
@@ -36,6 +37,10 @@ class InventoryController extends Controller
             return new InventoryResource($inventory);
         }
 
+        if($fields['quantity'] < 0){
+            return response()->json(['error' => 'Cannot create inventory with negative quantity'], 422);
+        }
+
         $inventory = Inventory::create($fields);
 
         return new InventoryResource($inventory);
@@ -54,7 +59,9 @@ class InventoryController extends Controller
      */
     public function update(UpdateinventoryRequest $request, inventory $inventory)
     {
-        $inventory->update($request->validated());
+        $fields = $request->validated();
+        $inventory->update($fields);
+        Log::info('Inventory updated', ['dish_id' => $fields['dish_id'], 'quantity' => $fields['quantity']]);
         return new InventoryResource($inventory);
     }
 
