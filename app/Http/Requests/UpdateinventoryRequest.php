@@ -11,7 +11,7 @@ class UpdateinventoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,17 @@ class UpdateinventoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'quantity' => 'sometimes|integer|min:0|max:50',
+            'availability' => 'sometimes|max:30',
+            'dish_id' => 'sometimes|integer|exists:dishes,id'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'dish_id.exists' => "This dish does not exist!",
+            'quantity.max' => "Quantity is limited to 50 pcs only"
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -37,15 +38,10 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $fields = $request->validate([
-            'cat_name' => 'sometimes|max:255',
-            'description' => 'sometimes'
-        ]);
-
-        $category->update($fields);
-        return $category;
+        $category->update($request->validated());
+        return new CategoryResource($category);
     }
 
     /**

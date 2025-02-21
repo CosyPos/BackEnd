@@ -11,7 +11,7 @@ class StoreDishRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,18 @@ class StoreDishRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'dish_name' => 'required|max:255|unique:dishes,dish_name',
+            'price' => 'required|numeric|min:0|max:9999.99',
+            'category_id' => 'required|integer|exists:categories,id',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'dish_name.unique' => 'This Dish already exists',
+            'dish_name.max' => 'The Dish name should not exceed 255 characters',
+            'category_id.exists' => 'This Category does not exist',
         ];
     }
 }

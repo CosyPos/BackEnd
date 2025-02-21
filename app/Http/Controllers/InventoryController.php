@@ -21,17 +21,13 @@ class InventoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreinventoryRequest $request)
     {
-        $fields = $request->validate([
-            'quantity' => 'required|integer',
-            'availability' => 'required|max:30',
-            'dish_id' => 'required|exists:dishes,id'
-        ]);
+        $fields = $request->validated();
 
         $inventory = Inventory::where('dish_id', $fields['dish_id'])->first();
 
-        if($inventory){
+        if ($inventory) {
             $inventory->update([
                 'quantity' => $fields['quantity'],
                 'availability' => $fields['availability']
@@ -56,16 +52,10 @@ class InventoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, inventory $inventory)
+    public function update(UpdateinventoryRequest $request, inventory $inventory)
     {
-        $fields = $request()->validate([
-            'quantity' => 'sometimes|integer',
-            'availability' => 'sometimes|max:30'
-        ]);
-
-        $inventory->update($fields);
-
-        return response()->json($inventory->load('dish'), 201);
+        $inventory->update($request->validated());
+        return new InventoryResource($inventory);
     }
 
     /**

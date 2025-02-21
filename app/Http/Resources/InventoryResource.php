@@ -18,6 +18,7 @@ class InventoryResource extends JsonResource
             'dish_id' => $this->dish_id,
             'id' => $this->id,
             'quantity' => $this->quantity,
+            'availability' => $this->availability,
         ];
     }
 }

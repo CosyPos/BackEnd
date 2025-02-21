@@ -23,14 +23,15 @@ class StoreCategoryRequest extends FormRequest
     {
         return [
             'cat_name' => 'required|max:255|unique:categories,cat_name',
-            'description' => 'required'
+            'description' => 'required|max:255'
         ];
     }
 
     public function messages()
     {
         return [
-            'cat_name.unique' => 'This Category already exist'
+            'cat_name.unique' => 'This Category already exist',
+            'cat_name.max' => 'The Category name should not exceed 255 characters'
         ];
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreDishRequest;
+use App\Http\Requests\UpdateDishRequest;
 use App\Http\Resources\DishResource;
 use App\Models\Dish;
 use Illuminate\Http\Request;
@@ -19,16 +21,10 @@ class DishController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreDishRequest $request)
     {
-        $fields = $request->validate([
-            'dish_name' => 'required|max:255',
-            'price' => 'required|integer',
-            'category_id' => 'required|exists:categories,id',
-        ]);
 
-        $dish = Dish::create($fields);
-
+        $dish = Dish::create($request->validated());
         return new DishResource($dish);
     }
 
@@ -43,17 +39,12 @@ class DishController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Dish $dish)
+    public function update(UpdateDishRequest $request, Dish $dish)
     {
-        $fields = $request->validate([
-            'dish_name' => "sometimes|,max:255",
-            'price' => "sometimes",
-            'category_id' => 'sometimes|exists:categories,id'
-        ]);
 
-        $dish->update($fields);
+        $dish->update($request->validated());
 
-        return response()->json($dish->load('category'), 200);
+        return new DishResource($dish);
     }
 
     /**
