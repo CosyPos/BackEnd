@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreinventoryRequest;
 use App\Http\Requests\UpdateinventoryRequest;
+use App\Http\Resources\InventoryResource;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class InventoryController extends Controller
      */
     public function index()
     {
-        return Inventory::all();
+        return InventoryResource::collection(Inventory::all());
     }
 
     /**
@@ -36,12 +37,12 @@ class InventoryController extends Controller
                 'availability' => $fields['availability']
             ]);
 
-            return response()->json($inventory->load('dish'), 201);
+            return new InventoryResource($inventory);
         }
 
         $inventory = Inventory::create($fields);
 
-        return response()->json($inventory->load('dish'), 201);
+        return new InventoryResource($inventory);
     }
 
     /**

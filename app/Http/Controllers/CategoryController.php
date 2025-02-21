@@ -1,9 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -14,7 +12,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return Category::all();
+        return CategoryResource::collection(Category::all());
     }
 
     /**
@@ -28,7 +26,7 @@ class CategoryController extends Controller
         ]);
 
         $category = Category::create($fields);
-        return $category;
+        return new CategoryResource($category);
     }
 
     /**

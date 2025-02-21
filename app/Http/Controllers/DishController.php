@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Http\Resources\DishResource;
 use App\Models\Dish;
 use Illuminate\Http\Request;
 
@@ -11,7 +13,7 @@ class DishController extends Controller
      */
     public function index()
     {
-        return Dish::all();
+        return DishResource::collection(Dish::all());
     }
 
     /**
@@ -27,7 +29,7 @@ class DishController extends Controller
 
         $dish = Dish::create($fields);
 
-        return response()->json($dish->load('category'), 201);
+        return new DishResource($dish);
     }
 
     /**
